@@ -456,7 +456,7 @@ export function burstShell(ctx, b) {
   const recipe = SHELLS[b.type] || SHELLS.peony;
   const radius = recipe(ctx, b) || 16;
   const A = color(b.type === 'willow' || (b.type === 'kamuro' && b.colorA !== 'white') ? 'gold' : b.colorA);
-  emitFlash(ctx, b.pos, b.time, A, radius * 0.22, 2.0, 0.16);
+  emitFlash(ctx, b.pos, b.time, A, radius * 0.1, 1.0, 0.16);
   burstSmoke(ctx, b, radius, Math.round(8 * Math.min(1.4, b.scale)), A);
   addFlash(b.pos, A, Math.min(1.6, 0.7 * b.scale + 0.35), b.time);
 }

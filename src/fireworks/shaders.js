@@ -71,7 +71,9 @@ const sparkVertex = /* glsl */ `
 
     if (kind < 1.5) {
       // Burning star (and its delayed tail copies): white-hot ignition → color → sputtering ember.
-      env = smoothstep(0.0, 0.03, age) * pow(1.0 - t, 1.1);
+      // Slow ignition: stars spread apart before reaching full brightness, so the
+      // hundreds that start at the same point don't stack into a white orb.
+      env = smoothstep(0.0, 0.16, age) * pow(1.0 - t, 1.1);
       float sputter = smoothstep(0.7, 1.0, t);
       env *= 1.0 - sputter * 0.8 * step(0.45, fract(age * 23.0 + seed * 17.0));
       hot = 1.0 - smoothstep(0.0, 0.14, t);
@@ -89,10 +91,10 @@ const sparkVertex = /* glsl */ `
       env = on * (1.0 - 0.7 * t) * smoothstep(0.0, 0.04, t);
       hot = 0.6;
     } else if (kind < 4.5) {
-      // Burst flash
+      // Burst flash: a soft coloured glow rather than a white ball
       env = pow(1.0 - t, 3.0);
-      col = mix(base, vec3(1.0), 0.6);
-      hot = 1.0;
+      col = mix(base, vec3(1.0), 0.2);
+      hot = 0.25;
       shrink = mix(0.6, 1.2, t);
     } else {
       // Rising rocket head
